@@ -1,0 +1,501 @@
+/* =========================================
+   奶娃大笑遊戲 (Naiva Laughing Game) - style.css
+   ========================================= */
+
+:root {
+  --primary-gold: #FFD700;
+  --secondary-gold: #FFA500;
+  --danger-color: #FF4757;
+  --combo-green: #2ED573;
+  --fever-purple: #9b59b6;
+  --bg-gradient: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0c2461 100%);
+  --glass-bg: rgba(20, 25, 40, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.12);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+body {
+  background: var(--bg-gradient);
+  min-height: 100vh;
+  overflow: hidden;
+  font-family: 'PingFang TC', 'Microsoft JhengHei', 'Arial Rounded MT Bold', sans-serif;
+  color: #fff;
+  position: relative;
+  touch-action: manipulation;
+}
+
+/* 宇宙星空與光暈背景 */
+#stars-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+  animation: twinkle var(--duration, 3s) ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.3); }
+}
+
+/* 狂熱模式全螢幕光暈 */
+body.fever-mode {
+  animation: feverPulse 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes feverPulse {
+  0% { box-shadow: inset 0 0 40px rgba(255, 215, 0, 0.35); }
+  100% { box-shadow: inset 0 0 90px rgba(255, 71, 87, 0.55); }
+}
+
+/* 頂部 HUD 狀態欄 */
+#hud {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--glass-border);
+  z-index: 100;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.hud-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.stat-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 6px 16px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+#score-display {
+  color: var(--primary-gold);
+  text-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
+}
+
+#timer-display {
+  color: var(--danger-color);
+  text-shadow: 0 0 12px rgba(255, 71, 87, 0.6);
+}
+
+#high-score-display {
+  color: #70a1ff;
+  font-size: 15px;
+}
+
+#combo-container {
+  min-width: 130px;
+  text-align: center;
+}
+
+#combo-display {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--combo-green);
+  text-shadow: 0 0 10px rgba(46, 213, 115, 0.7);
+  transition: transform 0.1s ease;
+}
+
+.combo-bounce {
+  animation: comboPop 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes comboPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.35) rotate(-3deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+
+/* 控制按鈕組 (音量、暫停) */
+.hud-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.icon-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: all 0.2s ease;
+}
+
+.icon-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.08);
+}
+
+.icon-btn:active {
+  transform: scale(0.92);
+}
+
+/* 遊戲主要舞台 */
+#game-area {
+  position: fixed;
+  top: 70px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  cursor: crosshair;
+}
+
+/* 奶娃角色實體樣式 */
+.naiva {
+  position: absolute;
+  cursor: pointer;
+  transform-origin: center center;
+  filter: drop-shadow(0 10px 20px rgba(255, 217, 0, 0.5));
+  transition: filter 0.2s;
+  will-change: transform, opacity;
+}
+
+.naiva img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
+}
+
+.naiva:hover {
+  filter: drop-shadow(0 12px 28px rgba(255, 215, 0, 0.95)) brightness(1.12);
+  transform: scale(1.05);
+}
+
+/* 黃金狂熱奶娃 */
+.naiva.golden {
+  filter: drop-shadow(0 0 25px #ffd700) brightness(1.25) saturate(1.5);
+  animation: goldenPulse 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes goldenPulse {
+  0% { transform: scale(1) rotate(-2deg); }
+  100% { transform: scale(1.12) rotate(2deg); }
+}
+
+/* 浮動呼吸動畫 */
+.naiva.floating {
+  animation: floatAnim 2.2s ease-in-out infinite;
+}
+
+@keyframes floatAnim {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-14px) rotate(3deg); }
+}
+
+/* 登場與被點擊爆破特效 */
+@keyframes popInAnim {
+  0% { transform: scale(0) rotate(-30deg); opacity: 0; }
+  65% { transform: scale(1.25) rotate(8deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+@keyframes boomAnim {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.4) rotate(12deg); }
+  50% { transform: scale(0.9) rotate(-10deg); filter: brightness(1.5); }
+  100% { transform: scale(0) rotate(35deg); opacity: 0; }
+}
+
+.naiva.popping-in {
+  animation: popInAnim 0.38s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.naiva.clicked {
+  animation: boomAnim 0.32s ease-out forwards;
+}
+
+/* 浮動加分文字標籤 */
+.float-score {
+  position: absolute;
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--primary-gold);
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.9);
+  pointer-events: none;
+  animation: floatUpAnim 0.85s ease-out forwards;
+  z-index: 250;
+  font-family: 'Arial Rounded MT Bold', sans-serif;
+}
+
+.float-score.golden {
+  color: #fff;
+  font-size: 38px;
+  text-shadow: 0 0 15px #ffd700, 0 0 30px #ff6b6b;
+}
+
+@keyframes floatUpAnim {
+  0% { opacity: 1; transform: translateY(0) scale(0.9); }
+  40% { transform: translateY(-35px) scale(1.3); }
+  100% { opacity: 0; transform: translateY(-90px) scale(1.1); }
+}
+
+/* 水波紋光圈 */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 220, 0, 0.8);
+  background: radial-gradient(circle, rgba(255, 220, 0, 0.45) 0%, rgba(255, 220, 0, 0) 70%);
+  pointer-events: none;
+  animation: rippleOut 0.55s ease-out forwards;
+  z-index: 80;
+}
+
+@keyframes rippleOut {
+  0% { width: 0; height: 0; opacity: 1; transform: translate(-50%, -50%); }
+  100% { width: 170px; height: 170px; opacity: 0; transform: translate(-50%, -50%); }
+}
+
+/* 彈性光點/彩紙粒子 */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 200;
+  animation: particleBurst 0.65s ease-out forwards;
+}
+
+@keyframes particleBurst {
+  0% { transform: translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
+}
+
+/* 遊戲開始/結算彈窗 (Overlay) */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 14, 25, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+  transition: opacity 0.3s ease;
+}
+
+.modal-overlay.hidden {
+  display: none;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.modal-card {
+  background: linear-gradient(145deg, rgba(30, 38, 60, 0.95), rgba(16, 22, 38, 0.95));
+  border: 1px solid rgba(255, 215, 0, 0.35);
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.6), 0 0 35px rgba(255, 215, 0, 0.2);
+  border-radius: 28px;
+  padding: 40px 50px;
+  text-align: center;
+  max-width: 520px;
+  width: 90%;
+  animation: modalScale 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalScale {
+  0% { transform: scale(0.85); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.modal-card .avatar-preview {
+  width: 140px;
+  height: 140px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulseAvatar 2s infinite ease-in-out;
+}
+
+.modal-card .avatar-preview img {
+  width: 110px;
+  height: 110px;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 15px rgba(255, 215, 0, 0.6));
+}
+
+@keyframes pulseAvatar {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+.modal-card h1 {
+  font-size: 38px;
+  color: var(--primary-gold);
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+  margin-bottom: 12px;
+}
+
+.modal-card p {
+  font-size: 17px;
+  color: #cfd8dc;
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.difficulty-select {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 20px 0 10px;
+}
+
+.diff-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ddd;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.diff-btn.active, .diff-btn:hover {
+  background: rgba(255, 215, 0, 0.2);
+  border-color: var(--primary-gold);
+  color: var(--primary-gold);
+  font-weight: bold;
+}
+
+.btn-primary {
+  margin-top: 24px;
+  padding: 16px 52px;
+  font-size: 24px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+  color: #1a1a2e;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5);
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-primary:hover {
+  transform: scale(1.06);
+  box-shadow: 0 10px 35px rgba(255, 215, 0, 0.75);
+}
+
+.btn-primary:active {
+  transform: scale(0.96);
+}
+
+/* 結算頁評等與統計 */
+.final-score-box {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 16px;
+  border-radius: 18px;
+  margin: 16px 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.final-score-title {
+  font-size: 15px;
+  color: #aaa;
+}
+
+.final-score-num {
+  font-size: 48px;
+  font-weight: 900;
+  color: var(--primary-gold);
+  text-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+  margin: 4px 0;
+}
+
+.stats-row {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+  font-size: 15px;
+  color: #eee;
+}
+
+.grade-badge {
+  font-size: 26px;
+  font-weight: bold;
+  margin: 10px 0;
+  display: inline-block;
+  padding: 6px 20px;
+  border-radius: 20px;
+  background: rgba(255, 215, 0, 0.15);
+  color: var(--primary-gold);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+/* 隱藏 YouTube 播放器容器 */
+#yt-player-wrap {
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+  bottom: 0;
+  left: 0;
+}
+
+/* 手機與窄螢幕適配 */
+@media (max-width: 600px) {
+  #hud {
+    padding: 10px 14px;
+  }
+  .stat-badge {
+    font-size: 16px;
+    padding: 4px 10px;
+  }
+  #high-score-display {
+    display: none;
+  }
+  .modal-card {
+    padding: 28px 20px;
+  }
+  .modal-card h1 {
+    font-size: 28px;
+  }
+  .btn-primary {
+    font-size: 20px;
+    padding: 14px 40px;
+  }
+}

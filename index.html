@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>奶娃大笑遊戲 🤣 - 終極狂暴手速版</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="naiva.png" type="image/png">
+</head>
+<body>
+
+  <!-- 星空背景光暈層 -->
+  <div id="stars-container"></div>
+
+  <!-- 頂部資訊看板 (HUD) -->
+  <header id="hud">
+    <div class="hud-section">
+      <div class="stat-badge" id="score-display">⭐ 0</div>
+      <div class="stat-badge" id="high-score-display">🏆 最高: 0</div>
+    </div>
+
+    <div class="hud-section" id="combo-container">
+      <div id="combo-display"></div>
+    </div>
+
+    <div class="hud-section">
+      <div class="stat-badge" id="timer-display">⏱ 30</div>
+      <div class="hud-actions">
+        <button id="pause-btn" class="icon-btn" title="暫停">⏸</button>
+        <button id="mute-btn" class="icon-btn" title="靜音開關">🔊</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 遊戲互動主舞台 -->
+  <main id="game-area"></main>
+
+  <!-- 開始遊戲彈窗 -->
+  <div id="start-modal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="avatar-preview">
+        <img src="naiva.png" alt="奶娃角色">
+      </div>
+      <h1>奶娃大笑遊戲 🤣</h1>
+      <p>點擊滿螢幕跳躍大笑的奶娃狂刷高分！</p>
+      <p>連擊不中斷將觸發 <strong style="color: #FFD700;">狂熱模式 (Fever)</strong> 分數狂飆 🔥</p>
+      <p>留意隨機現身的 <strong style="color: #FFD700;">黃金金奶娃</strong>，得分三倍爆擊！👑</p>
+
+      <!-- 挑戰時長選擇 -->
+      <div class="difficulty-select">
+        <button class="diff-btn" data-time="15">⚡ 15秒 極速</button>
+        <button class="diff-btn active" data-time="30">⏱ 30秒 經典</button>
+        <button class="diff-btn" data-time="60">🔥 60秒 狂歡</button>
+      </div>
+
+      <button id="start-btn" class="btn-primary">開始大笑！</button>
+    </div>
+  </div>
+
+  <!-- 暫停遊戲彈窗 -->
+  <div id="pause-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div style="font-size: 60px; margin-bottom: 12px;">⏸</div>
+      <h1>遊戲已暫停</h1>
+      <p>喘口氣，準備好再繼續狂暴點擊！</p>
+      <button id="resume-btn" class="btn-primary">繼續遊戲</button>
+    </div>
+  </div>
+
+  <!-- 遊戲結束結算彈窗 -->
+  <div id="end-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div style="font-size: 65px; margin-bottom: 8px;">🎉</div>
+      <h1>遊戲結束！</h1>
+      
+      <div class="final-score-box">
+        <div class="final-score-title">本次獲得總分</div>
+        <div class="final-score-num" id="final-score-val">0 分</div>
+        <span id="new-record-tag" style="display:none; color:#2ed573; font-weight:bold; font-size:15px;">✨ 突破歷史最高紀錄！</span>
+      </div>
+
+      <div id="final-grade" class="grade-badge">👑 奶娃至尊神手！</div>
+
+      <div class="stats-row">
+        <div>命中率：<strong id="stat-accuracy">100%</strong></div>
+        <div>最高連擊：<strong id="stat-max-combo">×0</strong></div>
+      </div>
+
+      <button id="restart-btn" class="btn-primary">再玩一次！</button>
+    </div>
+  </div>
+
+  <!-- YouTube 音訊播放載體 (預設靜音或由腳本控制) -->
+  <div id="yt-player-wrap">
+    <div id="yt-player"></div>
+  </div>
+
+  <!-- 引入模組化遊戲邏輯腳本 -->
+  <script src="game.js"></script>
+</body>
+</html>
